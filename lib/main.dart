@@ -3,8 +3,11 @@ import 'package:ecommerce_app/provider/user_provider.dart';
 import 'package:ecommerce_app/views/auth/check_authentication.dart';
 import 'package:ecommerce_app/views/auth/login.dart';
 import 'package:ecommerce_app/views/auth/signin.dart';
+import 'package:ecommerce_app/views/discount/discount_screen.dart';
 import 'package:ecommerce_app/views/home/home_nav.dart';
 import 'package:ecommerce_app/views/home/home_screen.dart';
+import 'package:ecommerce_app/views/products/specific_products.dart';
+import 'package:ecommerce_app/views/products/view_product_screen.dart';
 import 'package:ecommerce_app/views/profile/update_profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -45,6 +48,9 @@ class MyApp extends StatelessWidget {
           "/home_nav": (context) => HomeNav(),
           "/home": (context) => HomeScreen(),
           "/update_profile": (context) => UpdateProfileScreen(),
+          "/discount": (context) => DiscountScreen(),
+          "/specific_products": (context) => SpecificProducts(),
+          
         },
       ),
     );

@@ -24,32 +24,37 @@ class _DiscountContainerState extends State<DiscountContainer> {
           if (coupons.isEmpty) {
             return SizedBox();
           } else {
-            return Container(
-              width: double.infinity,
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
-              margin: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
-              decoration: BoxDecoration(
-                color: Colors.amber.shade100,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Use coupon : ${coupons[0].code}",
-                    style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.amber),
-                  ),
-                  Text(
-                    coupons[0].desc,
-                    style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.amber),
-                  )
-                ],
+            return GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, "/discount");
+              },
+              child: Container(
+                width: double.infinity,
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                margin: EdgeInsets.symmetric(horizontal: 6, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.amber.shade100,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Use coupon : ${coupons[0].code}",
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.amber),
+                    ),
+                    Text(
+                      coupons[0].desc,
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.amber),
+                    )
+                  ],
+                ),
               ),
             );
           }

@@ -66,4 +66,13 @@ class DbServices {
         .orderBy("priority", descending: true)
         .snapshots();
   }
+
+  // // // PRODUCTS
+  // READING PRODUCTS
+  Stream<QuerySnapshot> readProducts(String category ) {
+    return FirebaseFirestore.instance
+        .collection("shop_products")
+        .where("category", isEqualTo: category.toLowerCase())
+        .snapshots();
+  }
 }

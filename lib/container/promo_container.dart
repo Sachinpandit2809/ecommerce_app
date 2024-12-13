@@ -25,10 +25,18 @@ class _PromoContainerState extends State<PromoContainer> {
             } else {
               return CarouselSlider(
                 items: promos
-                    .map((promo) => Image.network(
-                                              promo.image,
-                                              fit: BoxFit.cover,
-                                            ))
+                    .map((promo) => GestureDetector(
+                          onTap: () {
+                            Navigator.pushNamed(context, "/specific_products",
+                                arguments: {
+                                  "name": promo.category,
+                                });
+                          },
+                          child: Image.network(
+                            promo.image,
+                            fit: BoxFit.cover,
+                          ),
+                        ))
                     .toList(),
                 options: CarouselOptions(
                     autoPlay: true,

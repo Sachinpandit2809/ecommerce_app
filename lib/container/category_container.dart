@@ -53,27 +53,34 @@ class CategoryButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        margin: EdgeInsets.all(4),
-        padding: EdgeInsets.all(4),
-        height: 95,
-        width: 95,
-        decoration: BoxDecoration(
-          color: Colors.amber.shade100,
-          borderRadius: BorderRadius.circular(20),
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Image.network(
-              image,
-              // fit: BoxFit.cover,
-              height: 50,
-            ),
-            8.heightBox,
-            Text("${name.substring(0, 1).toUpperCase()}${name.substring(1)}")
-          ],
-        ));
+    return GestureDetector(
+      onTap: () {
+        Navigator.pushNamed(context, "/specific_products", arguments: {
+          "name": name,
+        });
+      },
+      child: Container(
+          margin: EdgeInsets.all(4),
+          padding: EdgeInsets.all(4),
+          height: 95,
+          width: 95,
+          decoration: BoxDecoration(
+            color: Colors.amber.shade100,
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Image.network(
+                image,
+                // fit: BoxFit.cover,
+                height: 50,
+              ),
+              8.heightBox,
+              Text("${name.substring(0, 1).toUpperCase()}${name.substring(1)}")
+            ],
+          )),
+    );
   }
 }
