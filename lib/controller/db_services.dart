@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/modals/cart_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -69,10 +70,100 @@ class DbServices {
 
   // // // PRODUCTS
   // READING PRODUCTS
-  Stream<QuerySnapshot> readProducts(String category ) {
+  Stream<QuerySnapshot> readProducts(String category) {
     return FirebaseFirestore.instance
         .collection("shop_products")
         .where("category", isEqualTo: category.toLowerCase())
         .snapshots();
+  }
+  // SEARCH PRODUCT BY DOC IDS
+  // Stream<QuerySnapshot> searchProducts(List<String> docIds){
+  //   return FirebaseFirestore.instance.collection("shop_products").where(FieldPath.documentId,whereIn: docIds).snapshots();
+
+  // }
+  Stream<QuerySnapshot> searchProducts(List<String> docIds) {
+    return FirebaseFirestore.instance
+        .collection("shop_products")
+        .where(FieldPath.documentId, whereIn: docIds)
+        .snapshots();
+  }
+
+  // // // CART
+  // DISPLAY THE USER CART
+  Stream<QuerySnapshot> readUSerCart() {
+    return FirebaseFirestore.instance
+        .collection("shop_users")
+        .doc(user!.uid)
+        .collection("cart")
+        .snapshots();
+  }
+
+  //ADDING PRODUCT  TO THE CART
+  Future addToCart({required CartModel cartData}) async {
+    // update the cart data
+    try {
+      await FirebaseFirestore.instance
+          .collection("shop_users")
+          .doc(user!.uid)
+          .collection('cart')
+          .doc(cartData.productId)
+          .update({
+        "quantity": FieldValue.increment(1),
+        "product_id": cartData.productId,
+      });
+    } on FirebaseException catch (e) {
+      debugPrint(e.code.toString());
+      if (e.code == "not-found") {
+        // set the data
+        // insert
+        await FirebaseFirestore.instance
+            .collection("shop_users")
+            .doc(user!.uid)
+            .collection('cart')
+            .doc(cartData.productId)
+            .update({
+          "quantity": 1,
+          "product_id": cartData.productId,
+        });
+      }
+    }
+  }
+
+  // DELETE SPECIFIC PRODUCT FROM CART
+  Future deleteItemFromCart({required String productId}) async {
+    await FirebaseFirestore.instance
+        .collection("shop_users")
+        .doc(user!.uid)
+        .collection("cart")
+        .doc(productId)
+        .delete();
+  }
+
+  // EMPTY THE CART
+  Future emptyCart() async {
+    await FirebaseFirestore.instance
+        .collection("shop_users")
+        .doc(user!.uid)
+        .collection("cart")
+        .get()
+        .then((value) {
+      for (DocumentSnapshot doc in value.docs) {
+        doc.reference.delete();
+      }
+    });
+  }
+
+  // DECREASING COUNT OF ITEMS
+  Future decreaseCount({
+    required String productId,
+  }) async {
+    await FirebaseFirestore.instance
+        .collection("shop_users")
+        .doc(user!.uid)
+        .collection("cart")
+        .doc(productId)
+        .update({
+      "quantity": FieldValue.increment(-1),
+    });
   }
 }
