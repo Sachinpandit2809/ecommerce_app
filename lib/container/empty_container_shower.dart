@@ -2,7 +2,8 @@ import 'package:ecommerce_app/utils/ext/ext.dart';
 import 'package:flutter/material.dart';
 
 class EmptyContainerShower extends StatelessWidget {
-  const EmptyContainerShower({super.key});
+  final String title;
+  const EmptyContainerShower({super.key, this.title = "No data is Found"});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class EmptyContainerShower extends StatelessWidget {
             "assets/images/empty_box.png",
             height: 150,
           ),
-          Text("No data is Found"),
+          Text(title),
         ],
       ),
     );

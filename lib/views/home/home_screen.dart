@@ -1,6 +1,7 @@
 // import 'package:ecommerce_app/controller/auth_services.dart';
 import 'package:ecommerce_app/container/category_container.dart';
 import 'package:ecommerce_app/container/discount_container.dart';
+import 'package:ecommerce_app/container/home_page_maker_container.dart';
 import 'package:ecommerce_app/container/promo_container.dart';
 import 'package:flutter/material.dart';
 
@@ -18,10 +19,13 @@ class _HomeScreenState extends State<HomeScreen> {
         appBar: AppBar(
           title: Text("Customer app"),
         ),
-        body: Column(children: [
-          PromoContainer(),
-          DiscountContainer(),
-          CategoryContainer()
-        ]));
+        body: SingleChildScrollView(
+          child: Column(children: [
+            PromoContainer(),
+            DiscountContainer(),
+            CategoryContainer(),
+            HomePageMakerContainer()
+          ]),
+        ));
   }
 }
