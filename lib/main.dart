@@ -1,8 +1,10 @@
 import 'package:ecommerce_app/firebase_options.dart';
+import 'package:ecommerce_app/provider/cart_provider.dart';
 import 'package:ecommerce_app/provider/user_provider.dart';
 import 'package:ecommerce_app/views/auth/check_authentication.dart';
 import 'package:ecommerce_app/views/auth/login.dart';
 import 'package:ecommerce_app/views/auth/signin.dart';
+import 'package:ecommerce_app/views/cart/cart_screen.dart';
 import 'package:ecommerce_app/views/discount/discount_screen.dart';
 import 'package:ecommerce_app/views/home/home_nav.dart';
 import 'package:ecommerce_app/views/home/home_screen.dart';
@@ -31,6 +33,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
@@ -50,7 +53,7 @@ class MyApp extends StatelessWidget {
           "/update_profile": (context) => UpdateProfileScreen(),
           "/discount": (context) => DiscountScreen(),
           "/specific_products": (context) => SpecificProducts(),
-          
+          "cart": (context) => CartScreen()
         },
       ),
     );

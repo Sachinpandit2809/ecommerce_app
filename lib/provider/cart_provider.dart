@@ -8,9 +8,10 @@ import 'package:flutter/material.dart';
 
 class CartProvider with ChangeNotifier {
   StreamSubscription<QuerySnapshot>? _cartSubscription;
-  StreamSubscription<DocumentSnapshot>? _productSubscription;
+  StreamSubscription<QuerySnapshot>? _productSubscription;
+  // StreamSubscription<DocumentSnapshot<Object?>>? _productSubscription;
 
-  bool isLoading = false;
+  bool isLoading = true;
   List<CartModel> carts = [];
   List<String> cartUids = [];
   List<ProductsModel> products = [];
@@ -20,7 +21,7 @@ class CartProvider with ChangeNotifier {
   CartProvider() {
     readCartData();
   }
-
+// add product to the cart along with quantity
   void addToCart(CartModel cartModel) {
     DbServices().addToCart(cartData: cartModel);
     notifyListeners();
@@ -34,6 +35,7 @@ class CartProvider with ChangeNotifier {
       List<CartModel> cartsData =
           CartModel.fromJsonList(snapshot.docs) as List<CartModel>;
       carts = cartsData;
+      cartUids = [];
       for (int i = 0; i < carts.length; i++) {
         cartUids.add(carts[i].productId);
         debugPrint(" cart Uids : ${cartUids[i]}");
@@ -47,17 +49,17 @@ class CartProvider with ChangeNotifier {
   }
 
   // READ CART  PRODUCTS
-  void readCartProducts(List<String> uids) {
+  void readCartProducts(List<String> uids)  {
     _productSubscription?.cancel();
     _productSubscription = DbServices().searchProducts(uids).listen((snapshot) {
       List<ProductsModel> productData =
-          ProductsModel.fromJsonList(snapshot.docs) as List<ProductsModel>;
+          ProductsModel.fromJsonListChatGpt(snapshot.docs) as List<ProductsModel>;
       products = productData;
       isLoading = false;
       addCost(products, carts);
       calculateTotalQuantity();
       notifyListeners();
-    }) as StreamSubscription<DocumentSnapshot<Object?>>?;
+    });
   }
 
   // ADD COST OF ALL PRODUCTS
@@ -71,10 +73,11 @@ class CartProvider with ChangeNotifier {
     });
   }
 
+//  CALCULATE THE TOTAL QUANTITY FOR PRODUCTS
   void calculateTotalQuantity() {
     totalQuantity = 0;
-    for (CartModel cart in carts) {
-      totalQuantity += cart.quantity;
+    for (int i = 0; i < carts.length; i++) {
+      totalQuantity += carts[i].quantity;
     }
     debugPrint("total quantity $totalQuantity");
     notifyListeners();
@@ -89,8 +92,20 @@ class CartProvider with ChangeNotifier {
   }
 
   // DECREASE THE COUNT OF PRODUCT
-  void decreaseCount(String productId) {
-    readCartData();
+  void decreaseCount(String productId) async {
+    await DbServices().decreaseCount(productId: productId);
+
     notifyListeners();
+  }
+
+  void cancelProvider() {
+    _cartSubscription?.cancel();
+    _productSubscription?.cancel();
+  }
+
+  @override
+  void dispose() {
+    cancelProvider();
+    super.dispose();
   }
 }

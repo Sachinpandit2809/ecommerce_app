@@ -35,10 +35,33 @@ class ProductsModel {
       maxQuantity: json['maxQuantity'] ?? 0,
     );
   }
+
   static List<ProductsModel> fromJsonList(List<QueryDocumentSnapshot> list) {
     return list
         .map(
             (e) => ProductsModel.toJson(e.data() as Map<String, dynamic>, e.id))
+        .toList();
+  }
+
+// this is the chatGpt Code for below lines
+
+  factory ProductsModel.fromJson(Map<String, dynamic> json, String id) {
+    return ProductsModel(
+      name: json["name"] ?? "",
+      description: json["desc"] ?? "no description",
+      image: json["image"] ?? "",
+      new_price: json["new_price"] ?? 0,
+      old_price: json["old_price"] ?? 0,
+      category: json["category"] ?? "",
+      maxQuantity: json["maxQuantity"] ?? 0,
+      id: id ?? "",
+    );
+  }
+  static List<ProductsModel> fromJsonListChatGpt(
+      List<QueryDocumentSnapshot> list) {
+    return list
+        .map((e) =>
+            ProductsModel.fromJson(e.data() as Map<String, dynamic>, e.id))
         .toList();
   }
 }

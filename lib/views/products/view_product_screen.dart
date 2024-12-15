@@ -1,7 +1,12 @@
+import 'package:ecommerce_app/modals/cart_model.dart';
 import 'package:ecommerce_app/modals/products_model.dart';
 import 'package:ecommerce_app/utils/discount_calculater.dart';
 import 'package:ecommerce_app/utils/ext/ext.dart';
+import 'package:ecommerce_app/utils/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../provider/cart_provider.dart';
 
 class ViewProductScreen extends StatefulWidget {
   ProductsModel product;
@@ -119,7 +124,11 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
               width: MediaQuery.of(context).size.width * 0.5,
               height: 55,
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<CartProvider>(context, listen: false).addToCart(
+                        CartModel(productId: widget.product.id, quantity: 1));
+                    Utils.toastSuccessMessage("Added to Cart");
+                  },
                   child: Text("Add to cart"),
                   style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.amber,

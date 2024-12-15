@@ -8,7 +8,7 @@ class Utils {
         backgroundColor: Colors.red,
         textColor: Colors.white,
         gravity: ToastGravity.BOTTOM,
-        toastLength: Toast.LENGTH_LONG,
+        toastLength: Toast.LENGTH_SHORT,
         timeInSecForIosWeb: 1,
         fontSize: 14);
   }
@@ -19,7 +19,7 @@ class Utils {
         backgroundColor: Colors.green,
         textColor: Colors.white,
         gravity: ToastGravity.BOTTOM,
-        toastLength: Toast.LENGTH_LONG,
+        toastLength: Toast.LENGTH_SHORT,
         timeInSecForIosWeb: 1,
         fontSize: 14);
   }
@@ -30,7 +30,7 @@ class Utils {
         backgroundColor: Colors.amber,
         textColor: Colors.black,
         gravity: ToastGravity.BOTTOM,
-        toastLength: Toast.LENGTH_LONG,
+        toastLength: Toast.LENGTH_SHORT,
         timeInSecForIosWeb: 1,
         fontSize: 14);
   }

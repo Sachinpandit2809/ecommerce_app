@@ -17,7 +17,7 @@ class DbServices {
       };
       debugPrint("save $data");
       await FirebaseFirestore.instance
-          .collection("shop-users")
+          .collection("shop_users")
           .doc(user!.uid)
           .set(data);
     } catch (e) {
@@ -28,7 +28,7 @@ class DbServices {
   // UPDATE OTHER DATA IN DATABASE
   Future updateUserData({required Map<String, dynamic> extraData}) async {
     await FirebaseFirestore.instance
-        .collection("shop-users")
+        .collection("shop_users")
         .doc(user!.uid)
         .update(extraData);
   }
@@ -36,7 +36,7 @@ class DbServices {
   //READ USER CURRENT USER DATA
   Stream<DocumentSnapshot> readUserData() {
     return FirebaseFirestore.instance
-        .collection("shop-users")
+        .collection("shop_users")
         .doc(user!.uid)
         .snapshots();
   }
@@ -76,17 +76,15 @@ class DbServices {
         .where("category", isEqualTo: category.toLowerCase())
         .snapshots();
   }
-  // SEARCH PRODUCT BY DOC IDS
-  // Stream<QuerySnapshot> searchProducts(List<String> docIds){
-  //   return FirebaseFirestore.instance.collection("shop_products").where(FieldPath.documentId,whereIn: docIds).snapshots();
 
-  // }
+  //// SEARCH PRODUCT BY DOC IDS
   Stream<QuerySnapshot> searchProducts(List<String> docIds) {
     return FirebaseFirestore.instance
         .collection("shop_products")
         .where(FieldPath.documentId, whereIn: docIds)
         .snapshots();
   }
+
 
   // // // CART
   // DISPLAY THE USER CART
@@ -105,13 +103,15 @@ class DbServices {
       await FirebaseFirestore.instance
           .collection("shop_users")
           .doc(user!.uid)
-          .collection('cart')
+          .collection("cart")
           .doc(cartData.productId)
           .update({
-        "quantity": FieldValue.increment(1),
         "product_id": cartData.productId,
+        "quantity": FieldValue.increment(1),
       });
     } on FirebaseException catch (e) {
+      debugPrint("...................................");
+
       debugPrint(e.code.toString());
       if (e.code == "not-found") {
         // set the data
@@ -119,11 +119,11 @@ class DbServices {
         await FirebaseFirestore.instance
             .collection("shop_users")
             .doc(user!.uid)
-            .collection('cart')
+            .collection("cart")
             .doc(cartData.productId)
-            .update({
-          "quantity": 1,
+            .set({
           "product_id": cartData.productId,
+          "quantity": 1,
         });
       }
     }
@@ -165,5 +165,30 @@ class DbServices {
         .update({
       "quantity": FieldValue.increment(-1),
     });
+  }
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+  // ORDERS
+  // create a new order
+  Future createOrder({required Map<String, dynamic> data}) async {
+    await FirebaseFirestore.instance.collection("shop_orders").add(data);
+  }
+
+  // update the status of order
+  Future updateOrderStatus(
+      {required String docId, required Map<String, dynamic> data}) async {
+    await FirebaseFirestore.instance
+        .collection("shop_orders")
+        .doc(docId)
+        .update(data);
+  }
+
+  // read the order data of specific user
+  Stream<QuerySnapshot> readOrders() {
+    return FirebaseFirestore.instance
+        .collection("shop_orders")
+        .where("user_id", isEqualTo: user!.uid)
+        .orderBy("created_at", descending: true)
+        .snapshots();
   }
 }
