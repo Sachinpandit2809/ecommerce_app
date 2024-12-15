@@ -78,7 +78,9 @@ class _CartScreenState extends State<CartScreen> {
                     title: "Proced to Checkout",
                     height: 40,
                     width: 200,
-                    onPress: () {})
+                    onPress: () {
+                      Navigator.pushNamed(context, "/check_out");
+                    })
               ],
             ),
           );

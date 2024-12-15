@@ -5,6 +5,7 @@ import 'package:ecommerce_app/views/auth/check_authentication.dart';
 import 'package:ecommerce_app/views/auth/login.dart';
 import 'package:ecommerce_app/views/auth/signin.dart';
 import 'package:ecommerce_app/views/cart/cart_screen.dart';
+import 'package:ecommerce_app/views/cart/check_out_screen.dart';
 import 'package:ecommerce_app/views/discount/discount_screen.dart';
 import 'package:ecommerce_app/views/home/home_nav.dart';
 import 'package:ecommerce_app/views/home/home_screen.dart';
@@ -53,7 +54,8 @@ class MyApp extends StatelessWidget {
           "/update_profile": (context) => UpdateProfileScreen(),
           "/discount": (context) => DiscountScreen(),
           "/specific_products": (context) => SpecificProducts(),
-          "cart": (context) => CartScreen()
+          "cart": (context) => CartScreen(),
+          '/check_out': (context) => CheckOutScreen()
         },
       ),
     );

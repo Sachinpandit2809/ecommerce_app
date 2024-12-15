@@ -59,6 +59,15 @@ class DbServices {
         .snapshots();
   }
 
+  // // // VERYFY THE COUPONS
+  Future<QuerySnapshot> verifyDiscount({required String code}) {
+    debugPrint(" ................... \n  Searchin For code $code");
+    return FirebaseFirestore.instance
+        .collection("shop_coupons")
+        .where("code", isEqualTo: code)
+        .get();
+  }
+
   // // // CATEGORIES
   // READING CATEGORIES
   Stream<QuerySnapshot> readCategory() {
@@ -84,7 +93,6 @@ class DbServices {
         .where(FieldPath.documentId, whereIn: docIds)
         .snapshots();
   }
-
 
   // // // CART
   // DISPLAY THE USER CART
