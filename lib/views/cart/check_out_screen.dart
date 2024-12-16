@@ -1,10 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce_app/constants/payment.dart';
 import 'package:ecommerce_app/container/cart_container.dart';
+import 'package:ecommerce_app/container/flexible_button.dart';
 import 'package:ecommerce_app/controller/db_services.dart';
 import 'package:ecommerce_app/provider/cart_provider.dart';
 import 'package:ecommerce_app/utils/ext/ext.dart';
+import 'package:ecommerce_app/utils/utils.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/user_provider.dart';
@@ -26,6 +31,39 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
     // discount = 0;
     discount = (discountPercent * totalCost) ~/ 100;
     setState(() {});
+  }
+
+  Future<void> initPaymentSheet(int cost) async {
+    try {
+      final user = Provider.of<UserProvider>(context, listen: false);
+      // 1. create payment intent on the server
+      final data = await createPaymentIntent(
+          name: user.name,
+          address: user.address,
+          amount: (cost * 100).toString());
+
+      // 2. initialize the payment sheet
+      await Stripe.instance.initPaymentSheet(
+        paymentSheetParameters: SetupPaymentSheetParameters(
+          // Set to true for custom flow
+          customFlow: false,
+          // Main params
+          merchantDisplayName: 'Flutter Stripe Store Demo',
+          paymentIntentClientSecret: data['client_secret'],
+          // Customer keys
+          customerEphemeralKeySecret: data['ephemeralKey'],
+          customerId: data['id'],
+          // Extra options
+
+          style: ThemeMode.dark,
+        ),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e')),
+      );
+      rethrow;
+    }
   }
 
   @override
@@ -188,6 +226,70 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   );
                 },
               )),
+      bottomNavigationBar: Container(
+        height: 60,
+        padding: const EdgeInsets.all(8),
+        child: FlexibleButton(
+            title: "Procced to Pay",
+            onPress: () async {
+              final user = Provider.of<UserProvider>(context, listen: false);
+              if (user.address == "" ||
+                  user.phone == "" ||
+                  user.name == "" ||
+                  user.email == "") {
+                Utils.toastErrorMessage("Please fill your delivery details");
+                return;
+              }
+              await initPaymentSheet(
+                  Provider.of<CartProvider>(context, listen: false).totalCost -
+                      discount);
+              try {
+                await Stripe.instance.presentPaymentSheet();
+                final cart = Provider.of<CartProvider>(context, listen: false);
+                User? currentUser = FirebaseAuth.instance.currentUser;
+                List products = [];
+                for (int i = 0; i < cart.products.length; i++) {
+                  products.add({
+                    "id": cart.products[i].id,
+                    "name": cart.products[i].name,
+                    "image": cart.products[i].image,
+                    "single_price": cart.products[i].new_price,
+                    "total_price":
+                        cart.products[i].new_price * cart.carts[i].quantity,
+                    "quantity": cart.carts[i].quantity,
+                  });
+                }
+                // ORDER STATUS
+                // PAID - paid money by users
+                // SHIPPED - item shipped
+                // CANCELLED - item canacelled
+                // COMPLETED - order delevered
+                Map<String, dynamic> orderData = {
+                  "user_id": currentUser!.uid,
+                  "name": user.name,
+                  "email": user.email,
+                  "phone": user.phone,
+                  "discount": discount,
+                  "address": user.address,
+                  "total": cart.totalCost - discount,
+                  "products": products,
+                  "status": "PAID",
+                  "created_at": DateTime.now().millisecondsSinceEpoch
+                };
+
+                // creating new Order
+                await DbServices().createOrder(data: orderData);
+                //  close the check-out screen
+                Navigator.pop(context);
+                Utils.toastSuccessMessage("Payment Done");
+              } catch (e) {
+                debugPrint(" --- ---- ---- ---- ----- Payment sheet error " +
+                    e.toString());
+                debugPrint("  PAYMENT SHEET FAILED");
+                Utils.toastErrorMessage("Payment Failed");
+              }
+            }),
+      ),
     );
   }
 }
