@@ -94,6 +94,15 @@ class DbServices {
         .snapshots();
   }
 
+  //  // reduce the count of products after purchase
+  Future reduceQuantity(
+      {required String productId, required int quantity}) async {
+    await FirebaseFirestore.instance
+        .collection("shop_products")
+        .doc(productId)
+        .update({"maxQuantity": FieldValue.increment(-quantity)});
+  }
+
   // // // CART
   // DISPLAY THE USER CART
   Stream<QuerySnapshot> readUSerCart() {

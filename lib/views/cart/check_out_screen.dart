@@ -279,6 +279,16 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
                 // creating new Order
                 await DbServices().createOrder(data: orderData);
+                // reduce the quantity of product on firebaseFirestore
+                for (int i = 0; i < cart.products.length; i++) {
+                   DbServices().reduceQuantity(
+                      productId: cart.products[i].id,
+                      quantity: cart.carts[i].quantity);
+                }
+                //clear  the cart  for the user
+                await DbServices().emptyCart();
+                
+
                 //  close the check-out screen
                 Navigator.pop(context);
                 Utils.toastSuccessMessage("Payment Done");

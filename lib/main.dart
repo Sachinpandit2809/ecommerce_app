@@ -9,6 +9,8 @@ import 'package:ecommerce_app/views/cart/check_out_screen.dart';
 import 'package:ecommerce_app/views/discount/discount_screen.dart';
 import 'package:ecommerce_app/views/home/home_nav.dart';
 import 'package:ecommerce_app/views/home/home_screen.dart';
+import 'package:ecommerce_app/views/orders/orders_screen.dart';
+import 'package:ecommerce_app/views/orders/view_order_screen.dart';
 import 'package:ecommerce_app/views/products/specific_products.dart';
 import 'package:ecommerce_app/views/products/view_product_screen.dart';
 import 'package:ecommerce_app/views/profile/update_profile_screen.dart';
@@ -28,7 +30,6 @@ void main() async {
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
-
 
   runApp(const MyApp());
 }
@@ -63,7 +64,9 @@ class MyApp extends StatelessWidget {
           "/discount": (context) => DiscountScreen(),
           "/specific_products": (context) => SpecificProducts(),
           "cart": (context) => CartScreen(),
-          '/check_out': (context) => CheckOutScreen()
+          '/check_out': (context) => CheckOutScreen(),
+          "/orders": (context) => OrdersScreen(),
+          "/view_order":(context) => ViewOrderScreen()
         },
       ),
     );

@@ -38,8 +38,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: Icon(Icons.local_shipping_outlined),
               title: Text("Order"),
               onTap: () {
-                AuthServices().logOut();
-                Navigator.pushNamed(context, "/login");
+                Navigator.pushNamed(context, "/orders");
               },
             ),
             15.heightBox,
@@ -47,17 +46,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
               leading: Icon(Icons.discount_outlined),
               title: Text("Discount"),
               onTap: () {
-                AuthServices().logOut();
-                Navigator.pushNamed(context, "/login");
+                Navigator.pushNamed(context, "/discount");
               },
             ),
             15.heightBox,
             ListTile(
-              leading: Icon(Icons.logout),
-              title: Text("Log-out"),
+              leading: Icon(Icons.support_agent_sharp),
+              title: Text("Help & Support"),
               onTap: () {
-                AuthServices().logOut();
-                Navigator.pushNamed(context, "/login");
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Text("Mail us at sachinmaheshpandit@gmail.com")));
               },
             ),
             15.heightBox,
