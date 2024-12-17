@@ -3,6 +3,8 @@ import 'package:ecommerce_app/constants/payment.dart';
 import 'package:ecommerce_app/container/cart_container.dart';
 import 'package:ecommerce_app/container/flexible_button.dart';
 import 'package:ecommerce_app/controller/db_services.dart';
+import 'package:ecommerce_app/controller/mail_service.dart';
+import 'package:ecommerce_app/modals/orders_model.dart';
 import 'package:ecommerce_app/provider/cart_provider.dart';
 import 'package:ecommerce_app/utils/ext/ext.dart';
 import 'package:ecommerce_app/utils/utils.dart';
@@ -26,6 +28,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   int discount = 0;
   int toPay = 0;
   String discountText = "";
+  Map<String, dynamic> orderForMail = {};
+
+  bool paymentSuccess = false;
 
   discountCalculater(int discountPercent, int totalCost) {
     // discount = 0;
@@ -72,7 +77,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
       appBar: AppBar(
         title: Text("Checkout"),
         scrolledUnderElevation: 0,
-        forceMaterialTransparency: true,
+        // forceMaterialTransparency: true,
       ),
       body: Consumer<UserProvider>(
           builder: (context, userData, child) => Consumer<CartProvider>(
@@ -277,17 +282,21 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                   "created_at": DateTime.now().millisecondsSinceEpoch
                 };
 
+                orderForMail = orderData;
+
                 // creating new Order
                 await DbServices().createOrder(data: orderData);
                 // reduce the quantity of product on firebaseFirestore
                 for (int i = 0; i < cart.products.length; i++) {
-                   DbServices().reduceQuantity(
+                  DbServices().reduceQuantity(
                       productId: cart.products[i].id,
                       quantity: cart.carts[i].quantity);
                 }
                 //clear  the cart  for the user
                 await DbServices().emptyCart();
-                
+
+                //set payment success for mail sent
+                paymentSuccess = true;
 
                 //  close the check-out screen
                 Navigator.pop(context);
@@ -297,6 +306,9 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                     e.toString());
                 debugPrint("  PAYMENT SHEET FAILED");
                 Utils.toastErrorMessage("Payment Failed");
+              }
+              if (paymentSuccess) {
+                MailService().sendMailFromGmail(user.email, OrdersModel.fromJson(orderForMail, ""));
               }
             }),
       ),

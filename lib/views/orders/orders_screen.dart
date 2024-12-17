@@ -56,8 +56,9 @@ class _OrdersScreenState extends State<OrdersScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Orders"),
+        // backgroundColor: Colors.amber,
         scrolledUnderElevation: 0,
-        forceMaterialTransparency: true,
+        // forceMaterialTransparency: true,
       ),
       body: StreamBuilder(
           stream: DbServices().readOrders(),

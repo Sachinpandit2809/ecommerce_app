@@ -91,12 +91,12 @@ class _ZoneContainerState extends State<ZoneContainer> {
                                             )));
                               },
                               child: Container(
+                                height: 170,
                                 width: MediaQuery.sizeOf(context).width * .41,
                                 padding: EdgeInsets.all(8),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
-                                    borderRadius: BorderRadius.circular(10)),
-                                height: 180,
+                                    borderRadius: BorderRadius.circular(14)),
                                 margin: const EdgeInsets.all(5),
                                 child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,

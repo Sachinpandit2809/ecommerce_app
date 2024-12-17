@@ -1,7 +1,9 @@
 import 'package:ecommerce_app/container/home_buttons.dart';
+import 'package:ecommerce_app/provider/loading_provider.dart';
 import 'package:ecommerce_app/utils/ext/ext.dart';
 import 'package:ecommerce_app/views/auth/login.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../controller/auth_services.dart';
 
@@ -73,15 +75,22 @@ class _SignInState extends State<SignIn> {
                       height: 30,
                     ),
                     HomeButton(
+                        isLoading:
+                            Provider.of<LoadingProvider>(context).signInLoading,
                         name: "sign Up",
                         onPress: () {
                           if (_formKey.currentState!.validate()) {
+                            Provider.of<LoadingProvider>(context, listen: false)
+                                .setSignInLoading(true);
                             AuthServices()
                                 .createAccountWithEmail(
                                     nameController.text,
                                     emailController.text,
                                     passwordController.text)
                                 .then((onValue) => {
+                                      Provider.of<LoadingProvider>(context,
+                                              listen: false)
+                                          .setSignInLoading(false),
                                       if (onValue == "Account Created")
                                         {
                                           ScaffoldMessenger.of(context)

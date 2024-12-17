@@ -14,9 +14,9 @@ class UserProvider with ChangeNotifier {
   String address = "";
   String phone = "";
 
-UserProvider() {
-  loadUserProfile();
-}
+  UserProvider() {
+    loadUserProfile();
+  }
 // load user profile data
   Future<void> loadUserProfile() async {
     _userSubscription?.cancel();
@@ -31,5 +31,16 @@ UserProvider() {
       phone = data.phone;
       notifyListeners();
     });
+
+ 
   }
+     void cancelProvider() {
+      _userSubscription?.cancel();
+    }
+
+    @override
+    void dispose() {
+      cancelProvider();
+      super.dispose();
+    }
 }

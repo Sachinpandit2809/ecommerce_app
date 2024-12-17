@@ -1,4 +1,5 @@
 import 'package:ecommerce_app/controller/auth_services.dart';
+import 'package:ecommerce_app/provider/cart_provider.dart';
 import 'package:ecommerce_app/provider/user_provider.dart';
 import 'package:ecommerce_app/utils/ext/ext.dart';
 import 'package:ecommerce_app/views/auth/login.dart';
@@ -68,6 +69,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
               onTap: () {
                 AuthServices().logOut();
+                Provider.of<CartProvider>(context, listen: false)
+                    .cancelProvider();
+                Provider.of<UserProvider>(context, listen: false)
+                    .cancelProvider();
+
                 Navigator.pushNamed(context, "/login");
               },
             ),

@@ -22,7 +22,7 @@ class _ViewOrderScreenState extends State<ViewOrderScreen> {
       appBar: AppBar(
         title: Text("Order Summery"),
         scrolledUnderElevation: 0,
-        forceMaterialTransparency: true,
+        // forceMaterialTransparency: true,
       ),
       body: SingleChildScrollView(
           child: Padding(
@@ -32,7 +32,7 @@ class _ViewOrderScreenState extends State<ViewOrderScreen> {
             padding: EdgeInsets.symmetric(horizontal: 8),
             child: Text(
               "Delevery Details",
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
             ),
           ),
           Container(
@@ -130,9 +130,8 @@ class _ViewOrderScreenState extends State<ViewOrderScreen> {
             ),
           ),
           10.heightBox,
-          args.status != "PAID" || args.status != "ON_THE_WAY"
-              ? SizedBox()
-              : Center(
+          args.status == "PAID" || args.status == "ON_THE_WAY"
+              ? Center(
                   child: FlexibleButton(
                       height: 45,
                       width: 200,
@@ -145,6 +144,7 @@ class _ViewOrderScreenState extends State<ViewOrderScreen> {
                                 ));
                       }),
                 )
+              : SizedBox(),
         ]),
       )),
     );

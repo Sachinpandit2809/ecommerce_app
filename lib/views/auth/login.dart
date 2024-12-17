@@ -1,9 +1,11 @@
 
 import 'package:ecommerce_app/container/home_buttons.dart';
 import 'package:ecommerce_app/controller/auth_services.dart';
+import 'package:ecommerce_app/provider/loading_provider.dart';
 import 'package:ecommerce_app/utils/ext/ext.dart';
 import 'package:ecommerce_app/views/auth/signin.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -169,13 +171,19 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                    30.heightBox,
                     HomeButton(
+                      isLoading: Provider.of<LoadingProvider>(context)
+                                .loginLoading,
                         name: "Login",
                         onPress: () {
                           if (_formKey.currentState!.validate()) {
+                            Provider.of<LoadingProvider>(context, listen: false)
+                                .setLoginLoading(true);
                             AuthServices()
                                 .loginWithEmail(emailController.text,
                                     passwordController.text)
                                 .then((onValue) => {
+                                  Provider.of<LoadingProvider>(context, listen: false)
+                                .setLoginLoading(false),
                                       if (onValue == "Login Succesful")
                                         {
                                           ScaffoldMessenger.of(context)

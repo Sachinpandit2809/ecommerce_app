@@ -1,5 +1,6 @@
 import 'package:ecommerce_app/firebase_options.dart';
 import 'package:ecommerce_app/provider/cart_provider.dart';
+import 'package:ecommerce_app/provider/loading_provider.dart';
 import 'package:ecommerce_app/provider/user_provider.dart';
 import 'package:ecommerce_app/views/auth/check_authentication.dart';
 import 'package:ecommerce_app/views/auth/login.dart';
@@ -12,7 +13,7 @@ import 'package:ecommerce_app/views/home/home_screen.dart';
 import 'package:ecommerce_app/views/orders/orders_screen.dart';
 import 'package:ecommerce_app/views/orders/view_order_screen.dart';
 import 'package:ecommerce_app/views/products/specific_products.dart';
-import 'package:ecommerce_app/views/products/view_product_screen.dart';
+
 import 'package:ecommerce_app/views/profile/update_profile_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -44,11 +45,17 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => UserProvider()),
         ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => LoadingProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'Ecommerce App',
         theme: ThemeData(
+          appBarTheme: AppBarTheme(
+            backgroundColor: Colors.amber,
+            
+          ),
+          scaffoldBackgroundColor: Colors.white,
           // tested with just a hot reload.
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
           useMaterial3: true,
@@ -66,7 +73,7 @@ class MyApp extends StatelessWidget {
           "cart": (context) => CartScreen(),
           '/check_out': (context) => CheckOutScreen(),
           "/orders": (context) => OrdersScreen(),
-          "/view_order":(context) => ViewOrderScreen()
+          "/view_order": (context) => ViewOrderScreen()
         },
       ),
     );

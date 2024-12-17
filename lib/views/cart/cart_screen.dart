@@ -18,11 +18,11 @@ class _CartScreenState extends State<CartScreen> {
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
-        forceMaterialTransparency: true,
+        // forceMaterialTransparency: true,
         title: const Text(
           "Your Cart",
           style: TextStyle(
-              color: Colors.black, fontWeight: FontWeight.bold, fontSize: 26),
+              color: Colors.black, fontWeight: FontWeight.w400, fontSize: 22),
         ),
       ),
       body: Consumer<CartProvider>(
@@ -33,12 +33,12 @@ class _CartScreenState extends State<CartScreen> {
             );
           } else {
             if (value.carts.isEmpty) {
-              // return EmptyContainerShower(
-              //   title: "NO Items in Cart",
-              // );
-              return const Center(
-                child: Text("No Items in Cart"),
+              return EmptyContainerShower(
+                title: "No Items in Cart",
               );
+              // return const Center(
+              //   child: Text("No Items in Cart"),
+              // );
             } else {
               if (value.products.isNotEmpty) {
                 return ListView.builder(
@@ -54,8 +54,8 @@ class _CartScreenState extends State<CartScreen> {
                           selectedQuantity: value.carts[index].quantity);
                     });
               } else {
-                return Center(
-                  child: Text("No Items in Cart"),
+                return EmptyContainerShower(
+                  title: "No Items in Cart",
                 );
               }
             }

@@ -23,9 +23,9 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
       appBar: AppBar(
         title: Text("Product Details"),
         scrolledUnderElevation: 0,
-        toolbarHeight: 20,
+        // toolbarHeight: 20,
         automaticallyImplyLeading: false,
-        forceMaterialTransparency: true,
+        // forceMaterialTransparency: true,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
@@ -33,7 +33,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              40.heightBox,
+              20.heightBox,
               Container(
                 decoration: BoxDecoration(
                   color: Colors.purple.shade50,
@@ -138,7 +138,11 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
               width: MediaQuery.of(context).size.width * 0.5,
               height: 55,
               child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Provider.of<CartProvider>(context).addToCart(
+                        CartModel(productId: widget.product.id, quantity: 1));
+                    Navigator.pushNamed(context, "/check_out");
+                  },
                   child: Text("Buy Now"),
                   style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
