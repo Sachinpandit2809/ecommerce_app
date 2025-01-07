@@ -16,7 +16,7 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 
-<div style="display: flex; align-items: left; justify-content: left;">
+<div style="display: flex; align-items: left; justify-content: space-around;">
 
 <img src="assets/images/screen_recording.gif" height="600" width="300">
 
