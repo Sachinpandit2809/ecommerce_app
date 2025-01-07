@@ -59,6 +59,7 @@ flutter:
   assets:
     - assets/images/
     - .env
+    - image.jpg
   #  an assets section, like this:
   #   assets:
   #     - assets/images/
