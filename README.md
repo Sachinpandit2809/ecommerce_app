@@ -15,14 +15,7 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
-
-<div style="  width = 800;  display: flex; align-items: left; justify-content: space-around;">
-
-<img src="assets/images/screen_recording.gif" height="600" width="300">
-
-
-
-<img src = "assets/images/image.jpg" height="600" width = "300" >
-
-
- </div>
+<div style="width: 800px; display: flex; align-items: center; justify-content: center;">
+  <img src="assets/images/screen_recording.gif" height="600" width="300" style="margin-right: 50px;">
+  <img src="assets/images/image.jpg" height="600" width="300">
+</div>
