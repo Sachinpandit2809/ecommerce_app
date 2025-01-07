@@ -15,4 +15,12 @@ For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
 samples, guidance on mobile development, and a full API reference.
 
+
+<p style="display: flex; align-items: left; justify-content: left;">
 <img src = "assets/images/image.jpg" width = "400">
+
+<video width="640" height="360" controls>
+        <source src="assets/images/screen_recording.mp4.mp4" width="400" type="video/mp4">
+    
+</video>
+ </p>
