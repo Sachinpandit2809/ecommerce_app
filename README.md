@@ -16,13 +16,13 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 
-<p style="display: flex; align-items: left; justify-content: left;">
-<h1> demo video </h1>
+<div style="display: flex; align-items: left; justify-content: left;">
+
 <img src="assets/images/screen_recording.gif" width="400">
 
-<h2> home page </h2>
+
 
 <img src = "assets/images/image.jpg" width = "400">
 
 
- </p>
+ </div>
