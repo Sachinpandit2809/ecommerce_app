@@ -18,11 +18,11 @@ samples, guidance on mobile development, and a full API reference.
 
 <div style="display: flex; align-items: left; justify-content: left;">
 
-<img src="assets/images/screen_recording.gif" width="400">
+<img src="assets/images/screen_recording.gif" height="600" width="300">
 
 
 
-<img src = "assets/images/image.jpg" width = "400">
+<img src = "assets/images/image.jpg" height="600" width = "300">
 
 
  </div>
