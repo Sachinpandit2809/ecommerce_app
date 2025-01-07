@@ -16,13 +16,13 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 
 
-<div width ="800" style="display: flex; align-items: left; justify-content: space-around;">
+<div style="  width = 800;  display: flex; align-items: left; justify-content: space-around;">
 
 <img src="assets/images/screen_recording.gif" height="600" width="300">
 
 
 
-<img src = "assets/images/image.jpg" height="600" width = "300">
+<img src = "assets/images/image.jpg" height="600" width = "300" >
 
 
  </div>
