@@ -19,8 +19,8 @@ class _HomeNavState extends State<HomeNav> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: pages[selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
+          body: pages[selectedIndex],
+           bottomNavigationBar: BottomNavigationBar(
           selectedItemColor: Colors.amber,
           unselectedItemColor: Colors.grey,
           showSelectedLabels: true,
