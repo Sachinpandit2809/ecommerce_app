@@ -4,10 +4,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server/gmail.dart';
 
-class MailService{
-
-   // creating smtp server for gmail
-    final gmailSmtp = gmail(dotenv.env["GMAIL_MAIL"]!, dotenv.env["GMAIL_PASSWORD"]!);
+class MailService {
+  // creating smtp server for gmail
+  final gmailSmtp =
+      gmail(dotenv.env["GMAIL_MAIL"]!, dotenv.env["GMAIL_PASSWORD"]!);
 // send mail to the user using smtp
   sendMailFromGmail(String receiver, OrdersModel order) async {
     final message = Message()
@@ -17,6 +17,15 @@ class MailService{
       ..html = """
 <body style=" font-family: Verdana, Geneva, Tahoma, sans-serif">
     <h1 style="text-align: center;">Orders Receipt</h1>
+  
+    <h3 style="text-align: center;">Name : ${order.name}</h3>
+    <h3 style="text-align: center;">Email : ${order.email}</h3>
+    <h3 style="text-align: center;">Phone : ${order.phone}</h3>
+    <h3 style="text-align: center;">Address: ${order.address}</h3>
+
+<hr>
+
+
 
     <table style="width: 100%; border-collapse: collapse; font-family: Arial, sans-serif; margin:   10px auto; max-width: 1000px;">
         <thead>
