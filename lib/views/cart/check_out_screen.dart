@@ -4,6 +4,7 @@ import 'package:ecommerce_app/container/cart_container.dart';
 import 'package:ecommerce_app/container/flexible_button.dart';
 import 'package:ecommerce_app/controller/db_services.dart';
 import 'package:ecommerce_app/controller/mail_service.dart';
+import 'package:ecommerce_app/controller/razorpay/razorpay_payment.dart';
 import 'package:ecommerce_app/modals/orders_model.dart';
 import 'package:ecommerce_app/provider/cart_provider.dart';
 import 'package:ecommerce_app/utils/ext/ext.dart';
@@ -33,22 +34,19 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
   bool paymentSuccess = false;
 
   discountCalculater(int discountPercent, int totalCost) {
-    // discount = 0;
     discount = (discountPercent * totalCost) ~/ 100;
     setState(() {});
   }
 
-  Future<void> initPaymentSheet(int cost) async {
+ Future<void> initPaymentSheet(int cost) async {
     try {
       final user = Provider.of<UserProvider>(context, listen: false);
       // 1. create payment intent on the server
-      final data = await createPaymentIntent(
-          name: user.name,
-          address: user.address,
-          amount: (cost * 100).toString());
+      final data = await createPaymentIntent(name: user.name,address: user.address,
+      amount:  (cost*100).toString());
 
       // 2. initialize the payment sheet
-      await Stripe.instance.initPaymentSheet(
+     await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           // Set to true for custom flow
           customFlow: false,
@@ -59,23 +57,25 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
           customerEphemeralKeySecret: data['ephemeralKey'],
           customerId: data['id'],
           // Extra options
-
+          
+          
           style: ThemeMode.dark,
         ),
       );
+     
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
       );
       rethrow;
     }
-  }
+}
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Checkout"),
+        title: const Text("Checkout"),
         scrolledUnderElevation: 0,
         // forceMaterialTransparency: true,
       ),
@@ -88,13 +88,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
+                          const Text(
                             "Delevery Details",
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           Container(
-                              padding: EdgeInsets.all(12),
+                              padding: const EdgeInsets.all(12),
                               decoration: BoxDecoration(
                                 color: Colors.grey.shade200,
                                 borderRadius: BorderRadius.circular(10),
@@ -110,28 +110,28 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            "Name - " + userData.name,
-                                            style: TextStyle(
+                                            "Name - ${userData.name}",
+                                            style: const TextStyle(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                          Text("Email - " + userData.email),
-                                          Text("Phone - " + userData.phone),
-                                          Text("Address - " + userData.address),
+                                          Text("Email - ${userData.email}"),
+                                          Text("Phone - ${userData.phone}"),
+                                          Text("Address - ${userData.address}"),
                                         ]),
                                   ),
-                                  Spacer(),
+                                  const Spacer(),
                                   InkWell(
                                       onTap: () {
                                         Navigator.pushNamed(
                                             context, "/update_profile");
                                       },
-                                      child:
-                                          CircleAvatar(child: Icon(Icons.edit)))
+                                      child: const CircleAvatar(
+                                          child: Icon(Icons.edit)))
                                 ],
                               )),
                           20.heightBox,
-                          Text("Have a coupon? "),
+                          const Text("Have a coupon? "),
                           Row(
                             children: [
                               SizedBox(
@@ -198,31 +198,33 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                     }
                                     setState(() {});
                                   },
-                                  child: Text("Apply"))
+                                  child: const Text("Apply"))
                             ],
                           ),
                           8.heightBox,
-                          discountText == "" ? SizedBox() : Text(discountText),
+                          discountText == ""
+                              ? const SizedBox()
+                              : Text(discountText),
                           10.heightBox,
-                          Divider(),
+                          const Divider(),
                           10.heightBox,
                           Text(
                             "Total Quantity of Products : ${cartData.totalQuantity}",
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                           ),
                           Text(
                             " Sub total : ₹${cartData.totalCost}",
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                           ),
-                          Divider(),
+                          const Divider(),
                           Text(
-                            style: TextStyle(fontSize: 14),
+                            style: const TextStyle(fontSize: 14),
                             "Extra Discount: - ₹$discount",
                           ),
-                          Divider(),
+                          const Divider(),
                           Text(
                             "Total Payable amount : ₹${cartData.totalCost - discount}",
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 15, fontWeight: FontWeight.bold),
                           )
                         ],
@@ -245,11 +247,25 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 Utils.toastErrorMessage("Please fill your delivery details");
                 return;
               }
-              await initPaymentSheet(
-                  Provider.of<CartProvider>(context, listen: false).totalCost -
-                      discount);
+            await initPaymentSheet(
+                Provider.of<CartProvider>(context, listen: false).totalCost -
+                    discount);
+
+              // double amountP =
+              //     Provider.of<CartProvider>(context, listen: false).totalCost -
+              //         discount.toDouble();
+              //          Navigator.push(
+              //       context,
+              //       MaterialPageRoute(
+              //           builder: (context) =>
+              //               RazorpayPayment(paymentPrice: amountP)));
+
               try {
+                debugPrint("********************************");
+
                 await Stripe.instance.presentPaymentSheet();
+
+                debugPrint("%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%5");
                 final cart = Provider.of<CartProvider>(context, listen: false);
                 User? currentUser = FirebaseAuth.instance.currentUser;
                 List products = [];
@@ -302,13 +318,13 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                 Navigator.pop(context);
                 Utils.toastSuccessMessage("Payment Done");
               } catch (e) {
-                debugPrint(" --- ---- ---- ---- ----- Payment sheet error " +
-                    e.toString());
+                debugPrint(" --- ---- ---- ---- ----- Payment sheet error $e");
                 debugPrint("  PAYMENT SHEET FAILED");
                 Utils.toastErrorMessage("Payment Failed");
               }
               if (paymentSuccess) {
-                MailService().sendMailFromGmail(user.email, OrdersModel.fromJson(orderForMail, ""));
+                MailService().sendMailFromGmail(
+                    user.email, OrdersModel.fromJson(orderForMail, ""));
               }
             }),
       ),

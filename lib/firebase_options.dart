@@ -84,3 +84,18 @@ class DefaultFirebaseOptions {
     storageBucket: 'instagram-clone-57b94.appspot.com',
   );
 }
+
+/*
+make a er diagram in image were
+1 user view products
+2 user view Product details
+3 user can add to cart or buy the product
+4 if added to cart go to modifiy product quantity 
+5 next go for check out 
+6 in checkout can apply discount coupons
+7 payment method 
+8 payment successfull go to the orders section 
+9 view order details 
+10 modify order details
+
+*/

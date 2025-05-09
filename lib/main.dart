@@ -28,6 +28,8 @@ void main() async {
   );
   await dotenv.load(fileName: ".env");
   Stripe.publishableKey = dotenv.env['STRIPE_PUBLISHABLE_KEY']!;
+  // Stripe.publishableKey = "Sachin_secret_key";
+
   Stripe.merchantIdentifier = 'merchant.flutter.stripe.test';
   Stripe.urlScheme = 'flutterstripe';
   await Stripe.instance.applySettings();
@@ -51,9 +53,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Ecommerce App',
         theme: ThemeData(
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
             backgroundColor: Colors.amber,
-            
           ),
           scaffoldBackgroundColor: Colors.white,
           // tested with just a hot reload.
@@ -61,19 +62,19 @@ class MyApp extends StatelessWidget {
           useMaterial3: true,
         ),
         routes: {
-          "/": (context) => CheckUserLogInOrNot(),
-          "/login": (context) => LoginPage(),
-          "/signup": (context) => SignIn(),
-          "/check_user_login_or_not": (context) => CheckUserLogInOrNot(),
-          "/home_nav": (context) => HomeNav(),
-          "/home": (context) => HomeScreen(),
-          "/update_profile": (context) => UpdateProfileScreen(),
-          "/discount": (context) => DiscountScreen(),
-          "/specific_products": (context) => SpecificProducts(),
-          "cart": (context) => CartScreen(),
-          '/check_out': (context) => CheckOutScreen(),
-          "/orders": (context) => OrdersScreen(),
-          "/view_order": (context) => ViewOrderScreen()
+          "/": (context) => const CheckUserLogInOrNot(),
+          "/login": (context) => const LoginPage(),
+          "/signup": (context) => const SignIn(),
+          "/check_user_login_or_not": (context) => const CheckUserLogInOrNot(),
+          "/home_nav": (context) => const HomeNav(),
+          "/home": (context) => const HomeScreen(),
+          "/update_profile": (context) => const UpdateProfileScreen(),
+          "/discount": (context) => const DiscountScreen(),
+          "/specific_products": (context) => const SpecificProducts(),
+          "cart": (context) => const CartScreen(),
+          '/check_out': (context) => const CheckOutScreen(),
+          "/orders": (context) => const OrdersScreen(),
+          "/view_order": (context) => const ViewOrderScreen()
         },
       ),
     );
