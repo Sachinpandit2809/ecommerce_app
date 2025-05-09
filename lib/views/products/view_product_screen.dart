@@ -139,7 +139,7 @@ class _ViewProductScreenState extends State<ViewProductScreen> {
               height: 55,
               child: ElevatedButton(
                   onPressed: () {
-                    Provider.of<CartProvider>(context).addToCart(
+                    Provider.of<CartProvider>(context, listen: false).addToCart(
                         CartModel(productId: widget.product.id, quantity: 1));
                     Navigator.pushNamed(context, "/check_out");
                   },
